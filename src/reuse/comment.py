@@ -610,6 +610,7 @@ EXTENSION_COMMENT_STYLE_MAP = {
     ".clj": LispCommentStyle,
     ".cljc": LispCommentStyle,
     ".cljs": LispCommentStyle,
+    ".cls": TexCommentStyle,
     ".cmake": PythonCommentStyle,  # TODO: Bracket comments not supported.
     ".code-workspace": CCommentStyle,
     ".coffee": PythonCommentStyle,
