@@ -28,6 +28,7 @@ headers, in any case.
 import logging
 import operator
 import re
+from magic import Magic
 from pathlib import Path
 from textwrap import dedent
 from typing import NamedTuple, Optional, Type, cast
@@ -911,6 +912,24 @@ FILENAME_COMMENT_STYLE_MAP_LOWERCASE = {
     key.lower(): value for key, value in FILENAME_COMMENT_STYLE_MAP.items()
 }
 
+MIMETYPE_COMMENT_STYLE_MAP = {
+    "application/javascript":  CCommentStyle,
+    "applicaton/json": UncommentableCommentStyle,
+    "text/csv": UncommentableCommentStyle,
+    "text/html": HtmlCommentStyle,
+    "text/x-awk": PythonCommentStyle,
+    "text/x-c++": CCommentStyle,
+    "text/x-": CCommentStyle,
+    "text/x-java": CCommentStyle,
+    "text/x-makefile": PythonCommentStyle,
+    "text/xml": HtmlCommentStyle,
+    "text/x-msdos-batch": BatchFileCommentStyle,
+    "text/x-perl": PythonCommentStyle,
+    "text/x-ruby": PythonCommentStyle,
+    "text/x-script.python": PythonCommentStyle,
+    "text/x-shellscript": PythonCommentStyle,
+    "text/x-tex": TexCommentStyle,
+}
 
 def _all_style_classes() -> list[Type[CommentStyle]]:
     """Return a list of all defined style classes, excluding the base class."""
@@ -937,6 +956,13 @@ def get_comment_style(path: StrPath) -> Optional[Type[CommentStyle]]:
         style = cast(
             Optional[Type[CommentStyle]],
             EXTENSION_COMMENT_STYLE_MAP_LOWERCASE.get(path.suffix.lower()),
+        )
+    if style is None:
+        mime = Magic(mime=True)
+        mimetype = mime.from_file(path)
+        style = cast(
+            Optional[Type[CommentStyle]],
+            MIMETYPE_COMMENT_STYLE_MAP.get(mimetype)
         )
     return style
 
