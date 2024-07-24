@@ -19,6 +19,7 @@ import datetime
 import logging
 import os
 import sys
+import appdirs
 from argparse import SUPPRESS, ArgumentParser, Namespace
 from gettext import gettext as _
 from pathlib import Path
@@ -91,8 +92,10 @@ def find_template(project: Project, name: str) -> Template:
         TemplateNotFound: if template could not be found.
     """
     template_dir = project.root / ".reuse/templates"
+    global_template_dir = appdirs.user_data_dir("reuse") + "/templates"
     env = Environment(
-        loader=FileSystemLoader(str(template_dir)), trim_blocks=True
+        loader=FileSystemLoader([str(template_dir), global_template_dir]),
+        trim_blocks=True,
     )
 
     names = [name]
