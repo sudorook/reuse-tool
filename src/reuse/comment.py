@@ -423,7 +423,10 @@ class HtmlCommentStyle(CommentStyle):
 
     SHORTHAND = "html"
 
-    MULTI_LINE = MultiLineSegments("<!--", "", "-->")
+    MULTI_LINE = MultiLineSegments("<!--", "--", "-->")
+    INDENT_BEFORE_MIDDLE = "  "
+    INDENT_AFTER_MIDDLE = " "
+    INDENT_BEFORE_END = "  "
     SHEBANGS = ["<?xml"]
 
 
