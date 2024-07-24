@@ -28,6 +28,7 @@ from gettext import gettext as _
 from hashlib import sha1
 from inspect import cleandoc
 from itertools import chain
+from magic import Magic
 from os import PathLike
 from pathlib import Path
 from typing import (
@@ -52,6 +53,7 @@ from ._licenses import ALL_NON_DEPRECATED_MAP
 from .comment import (
     EXTENSION_COMMENT_STYLE_MAP_LOWERCASE,
     FILENAME_COMMENT_STYLE_MAP_LOWERCASE,
+    MIMETYPE_COMMENT_STYLE_MAP,
     CommentStyle,
     UncommentableCommentStyle,
     _all_style_classes,
@@ -281,6 +283,13 @@ def _get_comment_style(path: StrPath) -> Optional[Type[CommentStyle]]:
         style = cast(
             Optional[Type[CommentStyle]],
             EXTENSION_COMMENT_STYLE_MAP_LOWERCASE.get(path.suffix.lower()),
+        )
+    if style is None:
+        mime = Magic(mime=True)
+        mimetype = mime.from_file(path)
+        style = cast(
+            Optional[Type[CommentStyle]],
+            MIMETYPE_COMMENT_STYLE_MAP.get(mimetype),
         )
     return style
 

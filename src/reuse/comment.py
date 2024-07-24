@@ -908,6 +908,24 @@ FILENAME_COMMENT_STYLE_MAP_LOWERCASE = {
     key.lower(): value for key, value in FILENAME_COMMENT_STYLE_MAP.items()
 }
 
+MIMETYPE_COMMENT_STYLE_MAP = {
+    "application/javascript":  CCommentStyle,
+    "applicaton/json": UncommentableCommentStyle,
+    "text/csv": UncommentableCommentStyle,
+    "text/html": HtmlCommentStyle,
+    "text/x-awk": PythonCommentStyle,
+    "text/x-c++": CCommentStyle,
+    "text/x-": CCommentStyle,
+    "text/x-java": CCommentStyle,
+    "text/x-makefile": PythonCommentStyle,
+    "text/xml": HtmlCommentStyle,
+    "text/x-msdos-batch": BatchFileCommentStyle,
+    "text/x-perl": PythonCommentStyle,
+    "text/x-ruby": PythonCommentStyle,
+    "text/x-script.python": PythonCommentStyle,
+    "text/x-shellscript": PythonCommentStyle,
+    "text/x-tex": TexCommentStyle,
+}
 
 def _all_style_classes() -> List[Type[CommentStyle]]:
     """Return a list of all defined style classes, excluding the base class."""
